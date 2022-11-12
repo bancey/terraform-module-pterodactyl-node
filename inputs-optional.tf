@@ -61,6 +61,12 @@ variable "publicly_accessible" {
   default     = false
 }
 
+variable "existing_public_ip_id" {
+  description = "The ID of an existing public IP to use for the node"
+  type        = string
+  default     = null
+}
+
 variable "nsg_rules" {
   description = "Rule to apply to the network security group"
   type = map(object({

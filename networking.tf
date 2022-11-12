@@ -1,5 +1,5 @@
 resource "azurerm_public_ip" "this" {
-  count               = var.publicly_accessible ? 1 : 0
+  count               = var.publicly_accessible && var.existing_public_ip_id == null ? 1 : 0
   name                = "${var.name}-${var.env}-pip"
   location            = local.resource_group_location
   resource_group_name = local.resource_group_name
@@ -58,7 +58,7 @@ resource "azurerm_network_interface" "this" {
     subnet_id                     = azurerm_subnet.this.id
     private_ip_address_allocation = "Dynamic"
 
-    public_ip_address_id = var.publicly_accessible ? azurerm_public_ip.this[0].id : null
+    public_ip_address_id = var.publicly_accessible ? var.existing_public_ip_id == null ? azurerm_public_ip.this[0].id : var.existing_public_ip_id : null
   }
 
   tags = local.tags
