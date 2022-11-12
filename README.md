@@ -1,12 +1,23 @@
 # terraform-module-pterodactyl-node
 
-This module deploys a VM to Azure with a number of different options, and bootstraps it to work as a [Pterodactly node](https://pterodactyl.io/).
+This module deploys a VM to Azure with a number of different options, and bootstraps it to work as a [Pterodactly Wings node](https://pterodactyl.io/).
 
 ## Getting Started
 
 Consuming the module is as simple as adding a `module` block to your IaC configuration, see a basic example below.
 
-<!-- TODO - add example module consumption -->
+```hcl
+module "pterodactyl_node" {
+  source = "github.com/bancey/terraform-module-pterodactyl-node.git?ref=develop"
+
+  name              = "pteronode"
+  vm_size           = "Standard_D4as_v5"
+  vm_image_publiser = "canonical"
+  vm_image_offer    = "0001-com-ubuntu-server-focal"
+  vm_image_sku      = "20_04-lts-gen2"
+  vm_image_version  = "latest"
+}
+```
 
 Once the VM has been deployed you'll need to place the wings config in a file called `config.yml` in the `/etc/pterodactyl` directory.
 
@@ -55,7 +66,6 @@ Once the VM has been deployed you'll need to place the wings config in a file ca
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_admin_access_ip"></a> [admin\_access\_ip](#input\_admin\_access\_ip) | The IP to allow SSH connections from | `string` | n/a | yes |
 | <a name="input_admin_public_key"></a> [admin\_public\_key](#input\_admin\_public\_key) | Public key to use for the admin account. If not provided, a new key will be generated | `string` | `null` | no |
 | <a name="input_admin_username"></a> [admin\_username](#input\_admin\_username) | Username for the admin account. If not provided, a random username will be generated | `string` | `null` | no |
 | <a name="input_env"></a> [env](#input\_env) | The name of the environment | `string` | `"prod"` | no |

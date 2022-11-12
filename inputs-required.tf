@@ -3,11 +3,6 @@ variable "name" {
   type        = string
 }
 
-variable "admin_access_ip" {
-  description = "The IP to allow SSH connections from"
-  type        = string
-}
-
 variable "vm_size" {
   description = "The size of the VM to deploy"
   type        = string
