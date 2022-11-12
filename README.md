@@ -1,5 +1,14 @@
 # terraform-module-pterodactyl-node
-A terraform module that deploys an Azure VM and configures it as a Pterodactyl node.
+
+This module deploys a VM to Azure with a number of different options, and bootstraps it to work as a [Pterodactly node](https://pterodactyl.io/).
+
+## Getting Started
+
+Consuming the module is as simple as adding a `module` block to your IaC configuration, see a basic example below.
+
+<!-- TODO - add example module consumption -->
+
+Once the VM has been deployed you'll need to place the wings config in a file called `config.yml` in the `/etc/pterodactyl` directory.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
