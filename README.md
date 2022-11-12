@@ -88,4 +88,14 @@ Once the VM has been deployed you'll need to place the wings config in a file ca
 | <a name="input_vm_os_disk_type"></a> [vm\_os\_disk\_type](#input\_vm\_os\_disk\_type) | The type of the OS disk | `string` | `"StandardSSD_LRS"` | no |
 | <a name="input_vm_size"></a> [vm\_size](#input\_vm\_size) | The size of the VM to deploy | `string` | n/a | yes |
 | <a name="input_vnet_address_space"></a> [vnet\_address\_space](#input\_vnet\_address\_space) | The address space of the virtual network | `list(string)` | <pre>[<br>  "10.100.0.0/16"<br>]</pre> | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_private_ip"></a> [private\_ip](#output\_private\_ip) | The private IP address of the VM |
+| <a name="output_private_key_secret_id"></a> [private\_key\_secret\_id](#output\_private\_key\_secret\_id) | The reference to the private key in the keyvault, if a public key was NOT provided |
+| <a name="output_public_ip"></a> [public\_ip](#output\_public\_ip) | The public IP address of the VM, if publicly accessible |
+| <a name="output_public_key_secret_id"></a> [public\_key\_secret\_id](#output\_public\_key\_secret\_id) | The reference to the public key in the keyvault, if a public key was NOT provided |
+| <a name="output_username_secret_id"></a> [username\_secret\_id](#output\_username\_secret\_id) | The reference to the username in the keyvault, if a username was NOT provided |
 <!-- END_TF_DOCS -->
