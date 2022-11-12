@@ -10,4 +10,6 @@ resource "azurerm_virtual_machine_extension" "customscript" {
     "script": "${base64encode(templatefile("${path.module}/provision/bootstrap.sh", { domain = "${var.vm_domain_name}" }))}"
   }
   PROTECTED_SETTINGS
+
+  tags = local.tags
 }

@@ -25,6 +25,8 @@ resource "azurerm_linux_virtual_machine" "this" {
     sku       = var.vm_image_sku
     version   = var.vm_image_version
   }
+
+  tags = local.tags
 }
 
 resource "azurerm_dev_test_global_vm_shutdown_schedule" "this" {
