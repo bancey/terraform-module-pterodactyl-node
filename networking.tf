@@ -1,6 +1,6 @@
 resource "azurerm_public_ip" "this" {
-  count               = var.publicly_accessible ? var.node_count : 0
-  name                = "${var.name}-${var.env}-pip${count.index + 1}"
+  count               = var.publicly_accessible ? 1 : 0
+  name                = "${var.name}-${var.env}-pip"
   location            = local.resource_group_location
   resource_group_name = local.resource_group_name
   allocation_method   = "Static"
@@ -49,8 +49,7 @@ resource "azurerm_network_security_rule" "this" {
 }
 
 resource "azurerm_network_interface" "this" {
-  count               = var.node_count
-  name                = "${var.name}-${var.env}-nic${count.index + 1}"
+  name                = "${var.name}-${var.env}-nic"
   location            = local.resource_group_location
   resource_group_name = local.resource_group_name
 
@@ -59,14 +58,13 @@ resource "azurerm_network_interface" "this" {
     subnet_id                     = azurerm_subnet.this.id
     private_ip_address_allocation = "Dynamic"
 
-    public_ip_address_id = var.publicly_accessible ? azurerm_public_ip.this[count.index].id : null
+    public_ip_address_id = var.publicly_accessible ? azurerm_public_ip.this[0].id : null
   }
 
   tags = local.tags
 }
 
 resource "azurerm_network_interface_security_group_association" "this" {
-  count                     = var.node_count
-  network_interface_id      = azurerm_network_interface.this[count.index].id
+  network_interface_id      = azurerm_network_interface.this.id
   network_security_group_id = azurerm_network_security_group.this.id
 }

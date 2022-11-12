@@ -22,12 +22,6 @@ variable "vnet_address_space" {
   default     = ["10.100.0.0/16"]
 }
 
-variable "node_count" {
-  description = "The number of game servers to deploy"
-  type        = number
-  default     = 1
-}
-
 variable "env" {
   description = "The name of the environment"
   type        = string

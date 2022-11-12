@@ -1,12 +1,11 @@
 resource "azurerm_linux_virtual_machine" "this" {
-  count               = var.node_count
-  name                = "${var.name}-${var.env}-vm${count.index + 1}"
+  name                = "${var.name}-${var.env}-vm"
   location            = local.resource_group_location
   resource_group_name = local.resource_group_name
   size                = var.vm_size
   admin_username      = var.admin_username == null ? random_string.username[0].result : var.admin_username
   network_interface_ids = [
-    azurerm_network_interface.this[count.index].id
+    azurerm_network_interface.this.id
   ]
 
   admin_ssh_key {
@@ -29,8 +28,8 @@ resource "azurerm_linux_virtual_machine" "this" {
 }
 
 resource "azurerm_dev_test_global_vm_shutdown_schedule" "this" {
-  count              = var.vm_auto_shutdown_time == null || var.vm_auto_shutdown_time == null ? 0 : var.node_count
-  virtual_machine_id = azurerm_linux_virtual_machine.this[count.index].id
+  count              = var.vm_auto_shutdown_time == null || var.vm_auto_shutdown_time == null ? 0 : 1
+  virtual_machine_id = azurerm_linux_virtual_machine.this.id
   location           = local.resource_group_location
   enabled            = true
 
