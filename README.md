@@ -60,6 +60,7 @@ Once the VM has been deployed you'll need to place the wings config in a file ca
 | [random_string.username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [tls_private_key.this](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_public_ip.existing](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/public_ip) | data source |
 | [azurerm_resource_group.existing](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 
 ## Inputs
@@ -69,7 +70,7 @@ Once the VM has been deployed you'll need to place the wings config in a file ca
 | <a name="input_admin_public_key"></a> [admin\_public\_key](#input\_admin\_public\_key) | Public key to use for the admin account. If not provided, a new key will be generated | `string` | `null` | no |
 | <a name="input_admin_username"></a> [admin\_username](#input\_admin\_username) | Username for the admin account. If not provided, a random username will be generated | `string` | `null` | no |
 | <a name="input_env"></a> [env](#input\_env) | The name of the environment | `string` | `"prod"` | no |
-| <a name="input_existing_public_ip_id"></a> [existing\_public\_ip\_id](#input\_existing\_public\_ip\_id) | The ID of an existing public IP to use for the node | `string` | `null` | no |
+| <a name="input_existing_public_ip"></a> [existing\_public\_ip](#input\_existing\_public\_ip) | The name and resource group of an existing public IP to use for the node | <pre>object({<br>    name                = string<br>    resource_group_name = string<br>  })</pre> | `null` | no |
 | <a name="input_existing_resource_group_name"></a> [existing\_resource\_group\_name](#input\_existing\_resource\_group\_name) | Name of an existing resourcegroup to deploy resources into | `string` | `null` | no |
 | <a name="input_kv_policies"></a> [kv\_policies](#input\_kv\_policies) | Policiy to apply to the keyvault | <pre>set(object({<br>    tenant_id               = string<br>    object_id               = string<br>    application_id          = string<br>    certificate_permissions = list(string)<br>    key_permissions         = list(string)<br>    storage_permissions     = list(string)<br>    secret_permissions      = list(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_location"></a> [location](#input\_location) | Target Azure location to deploy resources into | `string` | `"uksouth"` | no |

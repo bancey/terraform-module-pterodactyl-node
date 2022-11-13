@@ -61,10 +61,13 @@ variable "publicly_accessible" {
   default     = false
 }
 
-variable "existing_public_ip_id" {
-  description = "The ID of an existing public IP to use for the node"
-  type        = string
-  default     = null
+variable "existing_public_ip" {
+  description = "The name and resource group of an existing public IP to use for the node"
+  type = object({
+    name                = string
+    resource_group_name = string
+  })
+  default = null
 }
 
 variable "nsg_rules" {
