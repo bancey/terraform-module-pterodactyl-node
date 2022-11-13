@@ -1,5 +1,5 @@
 resource "azurerm_public_ip" "this" {
-  count               = var.publicly_accessible ? var.existing_public_ip_id == null ? 1 : 0 : 0
+  count               = var.publicly_accessible && var.existing_public_ip_id == null ? 1 : 0
   name                = "${var.name}-${var.env}-pip"
   location            = local.resource_group_location
   resource_group_name = local.resource_group_name
