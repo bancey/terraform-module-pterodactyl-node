@@ -1,6 +1,6 @@
 output "public_ip" {
   description = "The public IP address of the VM, if publicly accessible"
-  value       = var.publicly_accessible ? azurerm_public_ip.this[0].ip_address : null
+  value       = var.publicly_accessible && var.existing_public_ip_id == null ? azurerm_public_ip.this[0].ip_address : null
   sensitive   = true
 }
 
