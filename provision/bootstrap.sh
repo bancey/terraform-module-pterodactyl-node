@@ -9,7 +9,7 @@ systemctl enable --now docker
 
 DOMAIN="${domain}"
 
-if [ -z "$DOMAIN" ]; then
+if [ ! -z "$DOMAIN" ]; then
     snap install --classic certbot
     certbot certonly --standalone --agree-tos --email abance@bancey.xyz --no-eff-email --non-interactive -d "$DOMAIN"
 fi
