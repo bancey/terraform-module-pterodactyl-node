@@ -30,13 +30,13 @@ resource "azurerm_linux_virtual_machine" "this" {
 }
 
 resource "azurerm_dev_test_global_vm_shutdown_schedule" "this" {
-  count              = var.vm_auto_shutdown_time == null || var.vm_auto_shutdown_time == null ? 0 : 1
+  count              = var.vm_shutdown_schedule == null ? 0 : 1
   virtual_machine_id = azurerm_linux_virtual_machine.this.id
   location           = local.resource_group_location
-  enabled            = true
+  enabled            = var.vm_shutdown_schedule.enabled
 
-  daily_recurrence_time = "0000"
-  timezone              = "GMT Standard Time"
+  daily_recurrence_time = var.vm_shutdown_schedule.time
+  timezone              = var.vm_shutdown_schedule.timezone
 
   notification_settings {
     enabled = false
