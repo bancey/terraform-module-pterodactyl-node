@@ -117,3 +117,9 @@ variable "vm_domain_name" {
   type        = string
   default     = null
 }
+
+variable "enable_aad_login" {
+  description = "Should AAD login be enabled for the VM."
+  type        = bool
+  default     = false
+}
