@@ -13,3 +13,13 @@ resource "azurerm_virtual_machine_extension" "customscript" {
 
   tags = local.tags
 }
+
+resource "azurerm_virtual_machine_extension" "aadlogin" {
+  count                      = var.enable_aad_login ? 1 : 0
+  name                       = "AADSSHLoginForLinux"
+  virtual_machine_id         = azurerm_linux_virtual_machine.this.id
+  publisher                  = "Microsoft.Azure.ActiveDirectory"
+  type                       = "AADSSHLoginForLinux"
+  type_handler_version       = "1.0"
+  auto_upgrade_minor_version = true
+}
