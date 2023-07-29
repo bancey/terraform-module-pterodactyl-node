@@ -102,16 +102,14 @@ variable "vm_os_disk_size_gb" {
   default     = 128
 }
 
-variable "vm_auto_shutdown_time" {
-  description = "The time at which the VM should be automatically shutdown"
-  type        = string
-  default     = "0000"
-}
-
-variable "vm_auto_shutdown_timezone" {
-  description = "The timezone for the auto shutdown time"
-  type        = string
-  default     = "GMT Standard Time"
+variable "vm_shutdown_schedule" {
+  description = "Shutdown schedule to create for the VM."
+  type        = object({ enabled = bool, timezone = string, time = string })
+  default = {
+    enabled  = false
+    time     = "0000"
+    timezone = "GMT Standard Time"
+  }
 }
 
 variable "vm_domain_name" {
