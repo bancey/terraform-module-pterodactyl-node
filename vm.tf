@@ -1,9 +1,10 @@
 resource "azurerm_linux_virtual_machine" "this" {
-  name                = "${var.name}-${var.env}-vm"
-  location            = local.resource_group_location
-  resource_group_name = local.resource_group_name
-  size                = var.vm_size
-  admin_username      = var.admin_username == null ? random_string.username[0].result : var.admin_username
+  name                            = "${var.name}-${var.env}-vm"
+  location                        = local.resource_group_location
+  resource_group_name             = local.resource_group_name
+  size                            = var.vm_size
+  admin_username                  = var.admin_username == null ? random_string.username[0].result : var.admin_username
+  disable_password_authentication = true
   network_interface_ids = [
     azurerm_network_interface.this.id
   ]
@@ -24,6 +25,13 @@ resource "azurerm_linux_virtual_machine" "this" {
     offer     = var.vm_image_offer
     sku       = var.vm_image_sku
     version   = var.vm_image_version
+  }
+
+  dynamic "identity" {
+    for_each = var.enable_aad_login ? [1] : []
+    content {
+      type = "SystemAssigned"
+    }
   }
 
   tags = local.tags
