@@ -22,6 +22,18 @@ variable "vnet_address_space" {
   default     = ["10.100.0.0/16"]
 }
 
+variable "existing_subnet_id" {
+  description = "The ID of an existing subnet to deploy resources into."
+  type        = string
+  default     = null
+}
+
+variable "existing_nsg_id" {
+  description = "The ID of an existing network security group to reference."
+  type        = string
+  default     = null
+}
+
 variable "env" {
   description = "The name of the environment"
   type        = string

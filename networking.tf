@@ -15,6 +15,7 @@ data "azurerm_public_ip" "existing" {
 }
 
 resource "azurerm_virtual_network" "this" {
+  count               = var.existing_subnet_id == null ? 1 : 0
   name                = "${var.name}-${var.env}-vnet"
   location            = local.resource_group_location
   resource_group_name = local.resource_group_name
@@ -24,13 +25,15 @@ resource "azurerm_virtual_network" "this" {
 }
 
 resource "azurerm_subnet" "this" {
+  count                = var.existing_subnet_id == null ? 1 : 0
   name                 = "${var.name}-${var.env}-subnet"
   resource_group_name  = local.resource_group_name
-  virtual_network_name = azurerm_virtual_network.this.name
+  virtual_network_name = azurerm_virtual_network.this[0].name
   address_prefixes     = var.vnet_address_space
 }
 
 resource "azurerm_network_security_group" "this" {
+  count               = var.existing_nsg_id == null ? 1 : 0
   name                = "${var.name}-${var.env}-nsg"
   resource_group_name = local.resource_group_name
   location            = local.resource_group_location
@@ -40,7 +43,7 @@ resource "azurerm_network_security_group" "this" {
 resource "azurerm_network_security_rule" "this" {
   for_each = var.nsg_rules
 
-  network_security_group_name = azurerm_network_security_group.this.name
+  network_security_group_name = var.existing_nsg_id == null ? azurerm_network_security_group.this[0].name : split("/", var.existing_nsg_id)[length(split("/", var.existing_nsg_id)) - 1]
   resource_group_name         = local.resource_group_name
 
   name                       = each.key
@@ -61,7 +64,7 @@ resource "azurerm_network_interface" "this" {
 
   ip_configuration {
     name                          = "${var.name}-${var.env}-ipconfig"
-    subnet_id                     = azurerm_subnet.this.id
+    subnet_id                     = var.existing_subnet_id == null ? azurerm_subnet.this[0].id : var.existing_subnet_id
     private_ip_address_allocation = "Dynamic"
 
     public_ip_address_id = var.publicly_accessible ? var.existing_public_ip == null ? azurerm_public_ip.this[0].id : data.azurerm_public_ip.existing[0].id : null
@@ -70,7 +73,14 @@ resource "azurerm_network_interface" "this" {
   tags = local.tags
 }
 
-resource "azurerm_network_interface_security_group_association" "this" {
-  network_interface_id      = azurerm_network_interface.this.id
-  network_security_group_id = azurerm_network_security_group.this.id
+resource "azurerm_subnet_network_security_group_association" "new" {
+  count                     = var.existing_subnet_id == null && var.existing_nsg_id == null ? 1 : 0
+  subnet_id                 = azurerm_subnet.this[0].id
+  network_security_group_id = azurerm_network_security_group.this[0].id
+}
+
+resource "azurerm_subnet_network_security_group_association" "existing" {
+  count                     = var.existing_subnet_id != null && var.existing_nsg_id == null ? 1 : 0
+  subnet_id                 = var.existing_subnet_id
+  network_security_group_id = azurerm_network_security_group.this[0].id
 }
