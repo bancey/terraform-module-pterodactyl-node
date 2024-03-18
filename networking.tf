@@ -41,7 +41,7 @@ resource "azurerm_network_security_group" "this" {
 }
 
 resource "azurerm_network_security_rule" "this" {
-  for_each = var.nsg_rules
+  for_each = var.existing_nsg_id == null ? var.nsg_rules : {}
 
   network_security_group_name = var.existing_nsg_id == null ? azurerm_network_security_group.this[0].name : split("/", var.existing_nsg_id)[length(split("/", var.existing_nsg_id)) - 1]
   resource_group_name         = local.resource_group_name
